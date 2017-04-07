@@ -7,17 +7,15 @@
 </head>
 <body>
 	<script type="text/javascript">
-		const todos = (state = [] , action) => {
+
+		const todo = (state , action) => {
 			switch(action.type){
 				case "ADD_TODO" :
-					return [
-						...state ,
-						{
-							id : 0 ,
-							completed : false ,
-							text : action.text
-						}
-					] ;
+					return {
+						id : 0 ,
+						completed : false ,
+						text : action.text
+					} ;
 				case "TOGGLE_TODO" :
 					return state.map(todo => {
 						if(todo['id'] === action['id']){
@@ -25,10 +23,26 @@
 						}
 						return todo ;
 					});
+				default :
+					break ;
+			}
+		}
+
+		const todos = (state = [] , action) => {
+			switch(action.type){
+				case "ADD_TODO" :
+					return [
+						...state ,
+						todo(void 0 , action)
+					] ;
+				case "TOGGLE_TODO" :
+					return todo(state , action);
 				default : 
 					return state ;
 			}
 		}
+
+
 		const testAddTodo = () => {
 			const stateBefore = [] ;
 			const action = {
