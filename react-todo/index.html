@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>React TodoList</title>
+</head>
+<body>
+	<div id="root"></div>
+	<script src="http://cdn.bootcss.com/redux/3.6.0/redux.js"></script>
+	<script src="https://fb.me/react-s0.14.0.js"></script>
+	<script src="https://fb.me/react-dom-0.14.0.js"></script>
+
+	<script >
+		const todo = (state = [] , action) => {
+			switch(action.type) {
+				case "ADD_TODO" : 
+					return [
+						...state , 
+						{
+							id : action.id ,
+							text : action.text ,
+							completed : false 
+						}
+					] ;
+				case "TOGGLE_TODO" : 
+					return state.map((item , index) => {
+						if(action.id * 1 === item.id * 1){
+							item['completed'] = true ;
+						}
+						return item ;
+					}) ;
+				default :
+					return state ;
+			}
+		} 
+
+		const todos = (state = {} , action) => {
+			switch(action.type){
+				case "ADD_TODO" : 
+					return todo(undefined , action) ;
+				case "TOGGLE_TODO" :
+					return todo(state , action) ;
+				default :
+					return state ;
+			}
+		}
+
+		const visibilityFilter = (state = "SHOW_ALL", action) => {
+			switch(action.type) {
+				case "SET_VISIBILITY_FILTER" :
+					return state.filter ;
+				default :
+					return  state ;
+			}
+		}
+
+		const {createStore , combineReducer} = Redux ;
+		const todoApp = combineReducer({
+			todos ,
+			visibilityFilter
+		});
+		const store = createStore(todoApp) ;
+
+		const {Component} = React ;
+		let nextToDoId = 0 ;
+		class TodoApp extends React {
+			constructor(props){
+				super(props);
+			}
+
+			render (){
+				return(
+					<div>
+						<button onClick={() => {
+							store.dispatch({
+								type : "ADD_TODO" ,
+								id : nextToDoId++ ,
+								text : 'test'
+							});
+						}}>Add Todo</button>
+						<button onClick={() => {
+							store.dispatch({
+								type : "TOGGLE_TODO" ,
+								id : 1 ,
+								text : 'toggle'
+							});
+						}}>Toggle Todo</button>
+					</div>
+				)
+			}
+		}
+
+		const render = () => {
+			<TodoApp /> ,
+			document.getElementById("#root")
+		} ;
+
+		render() ;
+		store.subScribe(render);
+
+	</script>
+</body>
+</html>
