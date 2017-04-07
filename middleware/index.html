@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux</title>
+	<script src="http://cdn.bootcss.com/redux/3.6.0/redux.js"></script>
+	<style type="text/css">
+		body {user-select : none;}
+		body button {padding: 10px 15px ;text-align: center;font-weight: 700 ;
+			font-size: 14px ;border: 1px solid #ccc ;border-radius: 10px ;
+			margin-right: 15px;outline: none;}
+	</style>
+</head>
+<body>
+	<div id="div" style="height: 50px;"></div>
+	<button id="add_btn">+</button><button id="del_btn">-</button>
+	<script type="text/javascript">
+		let $ = (selector = "") => {
+			if(selector === ""){throw "selector can not be empty" ;}
+			if(selector.indexOf("#") === 0){
+				return document.querySelector(selector) ;
+			}else {
+				return document.querySelectorAll(selector) ;
+			}	
+		};
+		const { createStore } = Redux ;
+		let reducer = (state = 0 , action) => {
+			switch(action.type){
+				case "ADD" : return state += 1 ;
+				case "DEL" : return state -+ 1 ;
+				default    : return state ;
+			}
+		}
+		let store = createStore(reducer) ;
+		// middleware
+		let next = store.dispatch ;
+		store.dispatch = (action) => {
+			console.log("dispatching" , action);
+			next(action) ;
+			console.log("next state" , store.getState());
+		};
+		store.subscribe(() => {
+			document.getElementById("div").innerText = store.getState() ;
+		}) ;
+		store.dispatch({type : "INIT"});
+		$("#add_btn").addEventListener("click" , () => {store.dispatch({type : "ADD"});});
+		$("#del_btn").addEventListener("click" , () => {store.dispatch({type : "DEL"});});
+	</script>
+</body>
+</html>

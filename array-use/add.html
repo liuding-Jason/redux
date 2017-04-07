@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux Array Use</title>
+	<script src="https://wzrd.in/standalone/expect@latest"></script>
+	<script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		const incrementCounter = (list , index) => {
+			/* 方式一：
+			return list
+					.slice(0 , index)
+					.concat([list[index] + 1])
+					.concat(list.slice(index + 1)); */
+			// 方式二：
+			return [
+				...list.slice(0 , index) ,
+				list[index] + 1 ,
+				...list.slice(index + 1)
+			]
+		}
+
+		const testIncrementCounter = () => {
+			const listBefore = [1 , 2 , 3] ;
+			const listAfter  = [1 , 3 , 3] ;
+			deepFreeze(listBefore) ;
+			expect(incrementCounter(listBefore , 1)).toEqual(listAfter);
+		}
+		testIncrementCounter();
+		console.log("all tests pasted!");
+
+
+	</script>
+</body>
+</html>

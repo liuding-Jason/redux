@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux Array Use</title>
+	<script src="https://wzrd.in/standalone/expect@latest"></script>
+	<script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		const delCounter = (list , index) => {
+			// 方式一：return list.slice(0 , index).concat(list.slice(index + 1));
+			// 方式二：
+			return [
+				...list.slice(0 , index) ,
+				...list.slice(1 + index)
+			]
+		}
+
+		const testDelCounter = (list) => {
+			const listBefore = [0 , 1 , 2] ;
+			const listAfter = [0 , 2] ;
+			deepFreeze(listBefore) ;
+			expect(delCounter(listBefore , 1)).toEqual(listAfter) ;
+		}
+
+		testDelCounter() ;
+		console.log("all test pasted!") ;
+	</script>
+</body>
+</html>

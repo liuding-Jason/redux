@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux Array Use</title>
+	<script src="https://wzrd.in/standalone/expect@latest"></script>
+	<script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		const addCounter = (list) => {
+			return  list.concat([0]);
+		}
+
+		const testAddCounter = () => {
+			const listBefore = [] ;
+			const listAfter = [0] ;
+			deepFreeze(listBefore);
+			expect(addCounter(listBefore)).toEqual(listAfter);
+		}
+
+		testAddCounter() ;
+		console.log("all test pasted!") ;
+	</script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux Array Use</title>
+	<script src="https://wzrd.in/standalone/expect@latest"></script>
+	<script src="https://wzrd.in/standalone/deep-freeze@latest"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		const todos = (state = [] , action) => {
+			switch(action.type){
+				case "ADD_TODO" :
+					return [
+						...state ,
+						{
+							id : 0 ,
+							completed : false ,
+							text : action.text
+						}
+					] ;
+				case "TOGGLE_TODO" :
+					return state.map(todo => {
+						if(todo['id'] === action['id']){
+							return Object.assign({} , todo , {completed : true}) ;
+						}
+						return todo ;
+					});
+				default : 
+					return state ;
+			}
+		}
+		const testAddTodo = () => {
+			const stateBefore = [] ;
+			const action = {
+				id : 0 , 
+				type : "ADD_TODO" ,
+				text : "learn Redux"
+			} ;
+			const stateAfter = [{
+				id : 0 ,
+				text : "learn Redux" ,
+				completed : false
+			}]
+			deepFreeze(stateBefore) ;
+			deepFreeze(action);
+			
+			expect(todos(stateBefore , action)).toEqual(stateAfter);
+		}
+
+		const testToggleTodo = () => {
+			const stateBefore = [{
+				id : 0 ,
+				text : "learn Redux" ,
+				completed : false
+			}, {
+				id : 1 ,
+				text : "redux array" ,
+				completed : false
+			}] ;
+			const stateAfter = [{
+				id : 0 ,
+				text : "learn Redux" ,
+				completed : false
+			}, {
+				id : 1 ,
+				text : "redux array" ,
+				completed : true
+			}]
+			const action = {
+				type : 'TOGGLE_TODO' ,
+				id : 1
+			} ;
+			deepFreeze(stateBefore);
+			deepFreeze(action);
+			expect(todos(stateBefore , action)).toEqual(stateAfter);
+		}
+
+		testAddTodo() ;
+		testToggleTodo() ;
+		console.log("All tests passed!");
+
+
+
+	</script>
+</body>
+</html>

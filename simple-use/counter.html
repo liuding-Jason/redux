@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Redux</title>
+	<script src="http://g.alicdn.com/platform/c/??zepto/1.1.6/zepto.min.js,react/0.14.3/react-with-addons.js,react/0.14.3/react-dom.min.js,react-router/2.0.0/umd/ReactRouter.min.js,fastclick/1.0.6/lib/fastclick.min.js,lie/3.0.2/dist/lie.polyfill.min.js"></script>
+	<script src="http://cdn.bootcss.com/redux/3.6.0/redux.js"></script>
+	<script src="https://cdn.bootcss.com/babel-core/6.1.19/browser.min.js"></script>
+	<style type="text/css">
+		body {user-select : none;}
+		body button {padding: 10px 15px ;text-align: center;font-weight: 700 ;
+			font-size: 14px ;border: 1px solid #ccc ;border-radius: 10px ;
+			margin-right: 15px;outline: none;}
+	</style>
+</head>
+<body>
+	<div id="app"></div>
+	<script type="text/javascript">
+		// $ fun
+		let $ = (selector = "") => {
+			if(selector === ""){throw "selector can not be empty" ;}
+			if(selector.indexOf("#") === 0){
+				return document.querySelector(selector) ;
+			}else {
+				return document.querySelectorAll(selector) ;
+			}	
+		};
+		// Counter Component
+		// 创建组件
+		const Counter = ({
+			value ,
+			addFun ,
+			delFun
+		}) => (
+			<div>
+				<h1>value</h1>
+				<button onClick={addFun}>+</button>
+				<button onClick={delFun}>-</button>
+			</div>
+		);
+		// redux
+		const { createStore } = Redux ;
+		let reducer = (state = 0 , action) => {
+			switch(action.type){
+				case "ADD" : return state += 1 ;
+				case "DEL" : return state -+ 1 ;
+				default    : return state ;
+			}
+		}
+		let store = createStore(reducer) ;
+		let render = () => {
+			ReactDOM.render(
+				<Counter 
+					value={store.getState()} 
+					addFun={store.dispatch({type : "ADD"})} 
+					delFun={store.dispatch({type : "DEL"})} /> , 
+				$("#app") , 
+				() => {}
+			);
+		}
+		store.subscribe(render) ;
+		
+	</script>
+</body>
+</html>
