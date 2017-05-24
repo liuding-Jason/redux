@@ -13,7 +13,7 @@ A repository containing small examples to illustrate the use of Redux .
  - [array-use](array-use) - array-use tells how to change array in pure ***redux*** .
  - [createStore](createStore) - createStore shows how to build a simple ***createStore*** with origin javaScript .
  - [todo](todo) - todo tells the actions of changing . 
- -[react-todo](react-todo) - react-todo shows how to use todoList in react .
+ - [react-todo](react-todo) - react-todo shows how to use todoList in react .
  - [combineReducer](combineReducer) - combineReducer shows how to build a simple "combineReducer" with origin javaScript .
 
 
